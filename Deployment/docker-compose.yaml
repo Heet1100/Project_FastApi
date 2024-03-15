@@ -1,0 +1,32 @@
+version: '3.3'
+
+services:
+  api:
+    build:
+      context: ./../.
+      dockerfile: ./deployments/Dockerfile
+    volumes:
+      - .:/deployments
+      - ../build:/ben-admin/build
+    ports:
+      - "8001:8001"
+    environment:
+      - DEBUG=True
+      - SERVICE=fastapi-project-api
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - API_PREFIX=/fast-api-project
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8001
+      - REGION_NAME=us-east-1 # ${REGION_NAME}
+      - DB_USER=postgres
+      - DB_PASS=root
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DATABASE=postgres
+      - DB_SECRET=partner/shore/db
+      - POOL_SIZE=5
+      - MAX_OVERFLOW=0
+      - POOL_PRE_PING=true
+      - DATASET_HONEYCOMB_DATASET_WRITE_KEY="021tYc73c9Bmq5w0gemwVF"
+      - DATASET_HONEYCOMB_DATASET_NAME="postgres"
