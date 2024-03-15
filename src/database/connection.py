@@ -11,26 +11,24 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from src.exception.exception import DBTransactionError
 from src.core.config import Settings
-from src.core.config import s
-from src.core import config as con
+
+
+
 
 Base = declarative_base()
 LOGGER = logging.getLogger(__name__)
 
 
 class DBConnector:
-    def __init__(self):
-       # self.s = s
-       pass
-
-    # creats new connection
+    def __init__(self, config):
+       self.config = config
 
     def get_rds_instance(self):
         rds_engine = create_engine(
-            con.db_url())
-            #pool_size=int(self.s.pool_size),
-            #max_overflow=int(self.s.max_overflow),
-           # pool_pre_ping=self.s.pool_pre_ping
+            self.config.db_url(),
+            pool_size=int(self.config.pool_size),
+            max_overflow=int(self.config.max_overflow),
+            pool_pre_ping=self.config.pool_pre_ping)
         return rds_engine
 
 
@@ -82,7 +80,7 @@ def get_db():
         db.close()
 
 
-def get_raw_db_conn(request: Request):
+def get_raw_db_conn():
     """provide engine connection to path operation to execute raw query"""
     connection = DBConnection.raw_conn()
     try:

@@ -5,22 +5,20 @@ from src.database.connection import Base
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "item"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
-
+    name = Column(String, nullable=False)
+    price = Column(Integer,nullable=False)
+    description = Column(String)
+    store_id= Column(Integer, ForeignKey("store"))
     items = relationship("Item", back_populates="owner")
 
 
 class Item(Base):
-    __tablename__ = "items"
+    __tablename__ = "store"
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    store_id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
 
     owner = relationship("User", back_populates="items")
